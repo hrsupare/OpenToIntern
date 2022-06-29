@@ -17,8 +17,7 @@ const internSchema = new mongoose.Schema({
     }, 
     collegeId: {
         type: ObjectId,
-        ref: "College",
-        required:true       //? mandatory not mentioned in README
+        ref: "College",         //? mandatory not mentioned in README      
     },
     isDeleted: {type: Boolean, default: false}
 
