@@ -9,8 +9,6 @@ const isValid = function (x) {
     if (typeof x === 'string' && x.trim().length === 0) return false
     return true
 }
-let strRegex =/^\w[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$/;
-// var urlRegEx = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpeg|png)/
 const college = async function (req, res) {
     try {
         let data = req.body
