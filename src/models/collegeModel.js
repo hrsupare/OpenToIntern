@@ -16,7 +16,7 @@ const collegeModel = new mongoose.Schema({
     },
     isDeleted: {
         type: Boolean,
-        default: true
+        default: false
     }
 }, { timestamps: true })
 

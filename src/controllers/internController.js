@@ -1,6 +1,7 @@
 const internModel = require('../models/internModel')
 const collegeModel = require('../models/collegeModel')
 
+
 exports.createIntern = async function(req,res){
     try{
     //key validation
