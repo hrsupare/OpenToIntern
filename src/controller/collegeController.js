@@ -9,7 +9,7 @@ const isValid = function (x) {
     if (typeof x === 'string' && x.trim().length === 0) return false
     return true
 }
-const college = async function (req, res) {
+const createCollege = async function (req, res) {
     try {
         let data = req.body
        
@@ -33,4 +33,4 @@ const college = async function (req, res) {
     }
 }
 
-module.exports.college = college
+module.exports.createCollege = createCollege
