@@ -36,11 +36,11 @@ exports.createIntern = async function(req,res){
         if(numberExist){
             return res.status(400).send({status:false,msg: "mobile number is already registered"})
         }
-        // let nameExist = await collegeModel.findOne({name : collegeName})
-        // console.log(nameExist)
-        // if(!nameExist){
-        //     return res.status(400).send({status:false,msg: "this collegeName is not present in db"})
-        // }
+        let nameExist = await collegeModel.findOne({name : collegeName})
+        console.log(nameExist)
+        if(!nameExist){
+            return res.status(400).send({status:false,msg: "this collegeName is not present in db"})
+        }
 
 
         const savedObj = {}
@@ -49,11 +49,12 @@ exports.createIntern = async function(req,res){
         if(name) savedObj.name = data.name
         if(email) savedObj.email = data.email
         if(mobile) savedObj.mobile = data.mobile
-        const intern = await internModel.create(data)
         const findIdofCollege = await collegeModel.findOne(nameObj).select({_id : 1})
-        const id = findIdofCollege.toString()
-        const updateId = await internModel.findOneAndUpdate(savedObj,{$set:findIdofCollege},{new:true})
-        res.send({msg : updateId})
+        const id = findIdofCollege._id.toString()
+        savedObj.collegeId = id
+        const intern = await internModel.create(savedObj)
+        // const updateId = await internModel.findOneAndUpdate(savedObj,{$set:findIdofCollege},{new:true})
+        res.send({msg : intern})
 
     } catch(err){
         res.status(500).send(err.message)
