@@ -38,7 +38,7 @@ exports.createIntern = async function(req,res){
             return res.status(400).send({status:false,msg: "mobile number is already registered"})
         }
         let nameExist = await collegeModel.findOne({name : collegeName})
-        console.log(nameExist)
+        // console.log(nameExist)
         if(!nameExist){
             return res.status(400).send({status:false,msg: "this collegeName is not present in db"})
         }
