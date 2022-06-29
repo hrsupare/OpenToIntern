@@ -1,63 +1,26 @@
-const internModel = require('../models/internModel')
-const collegeModel = require('../models/collegeModel')
+const { findOne } = require('../models/collegeModel.js');
+const collegeModel = require('../models/collegeModel.js');
+const internModel = require('../models/internModel.js');
 
 
-exports.createIntern = async function(req,res){
-    try{
-    //key validation
-    const fieldAllowed = ["name","collegeName","mobile","email"];
-    const data = req.body;
-    const keyOf = Object.keys(data);
-    const receivedKey = fieldAllowed.filter((x) => !keyOf.includes(x));
-    if (receivedKey.length) {
-      return res
-        .status(400)
-        .send({ status: "fail", msg: `${receivedKey} field is missing` });
+//create intern
+const createIntern = async function(req, res){
+    try {
+        const details = req.body;
+
+        const clgName = req.body.collegeName;
+        const clg = await collegeModel.findOne({name:clgName});
+        if(!clg) return res.status(400).send({status:false, message: "sorry! this college has been not registered yet"})
+
+        details.collegeId = clg._id;
+        delete details.collegeName;
+
+        const savedIntern = await internModel.create(details);
+        return res.status(201).send({status:true, data:savedIntern});
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send({status:false, messsage: error.message})
     }
-    //key value validation
-    const {collegeName,name,email,mobile} = data
-    if (!(/^[A-Za-z ]{1,29}$/.test(name))) {
-        return res
-          .status(400)
-          .send({ status: false, message: `name is invalid or blank` });
-      }
-      if(email.length == 0){
-        return res.status(400).send({status:false,msg:"email is blank"})
-      }
-      if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-        return res.status(400).send({
-          status: false,
-          message: `${email} should be a valid email address`,
-        });
-      }
-        if(!(/^[0-9]{1,10}$/.test(mobile))){
-            return res.status(400).send({status:false,msg:"mobile no is invalid or blank"})
-        }
-        let numberExist = await internModel.findOne({"mobile":mobile})
-        if(numberExist){
-            return res.status(400).send({status:false,msg: "mobile number is already registered"})
-        }
-        let nameExist = await collegeModel.findOne({name : collegeName})
-        // console.log(nameExist)
-        if(!nameExist){
-            return res.status(400).send({status:false,msg: "this collegeName is not present in db"})
-        }
-
-
-        const savedObj = {}
-        const nameObj = {}
-        if(collegeName) nameObj.name = data.collegeName 
-        if(name) savedObj.name = data.name
-        if(email) savedObj.email = data.email
-        if(mobile) savedObj.mobile = data.mobile
-        const findIdofCollege = await collegeModel.findOne(nameObj).select({_id : 1})
-        const id = findIdofCollege._id.toString()
-        savedObj.collegeId = id
-        const intern = await internModel.create(savedObj)
-        // const updateId = await internModel.findOneAndUpdate(savedObj,{$set:findIdofCollege},{new:true})
-        res.send({msg : intern})
-
-    } catch(err){
-        res.status(500).send(err.message)
-    }
+    
 }
+module.exports.createIntern = createIntern

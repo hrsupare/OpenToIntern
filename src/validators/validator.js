@@ -1,9 +1,10 @@
 const collegeModel = require('../models/collegeModel')
+const internModel = require('../models/internModel.js');
 
 const strregEx = /^\w[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$/
 const urlregEx = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
 
-const  collegeValidation = async function (req, res,next) {
+const collegeValidation = async function (req, res, next) {
     try {
         let data = req.body
 
@@ -26,4 +27,42 @@ const  collegeValidation = async function (req, res,next) {
     }
 }
 
+const internValidation = async function (req, res, next) {
+    try {
+        const { collegeName, name, email, mobile } = data
+        if (!(/^[A-Za-z ]{1,29}$/.test(name))) {
+            return res
+                .status(400)
+                .send({ status: false, message: `name is invalid or blank` });
+        }
+        if (email.length == 0) {
+            return res.status(400).send({ status: false, msg: "email is blank" })
+        }
+        if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+            return res.status(400).send({
+                status: false,
+                message: `${email} should be a valid email address`,
+            });
+        }
+        if (!(/^[0-9]{1,10}$/.test(mobile))) {
+            return res.status(400).send({ status: false, msg: "mobile no is invalid or blank" })
+        }
+        let numberExist = await internModel.findOne({ "mobile": mobile })
+        if (numberExist) {
+            return res.status(400).send({ status: false, msg: "mobile number is already registered" })
+        }
+        let nameExist = await collegeModel.findOne({ name: collegeName })
+        // console.log(nameExist)
+        if (!nameExist) {
+            return res.status(400).send({ status: false, msg: "this collegeName is not present in db" })
+        }
+    } catch (err) {
+        res.status(500).send({ status: false, msg: err.message })
+    }
+}
+
 module.exports.collegeValidation = collegeValidation
+
+
+
+
