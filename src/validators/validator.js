@@ -2,15 +2,17 @@ const collegeModel = require('../models/collegeModel')
 const internModel = require('../models/internModel.js');
 
 const strregEx = /^\w[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$/
-const urlregEx = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+let urlregEx = /^(https:\/\/www\.|http:\/\/www\.|www\.)[a-zA-Z0-9\-_.$]+\.[a-zA-Z]{2,5}(:[0-9]{1,5})?(\/[^\s]*)?(.png|.jpeg|.jpg)$/gm
+
 
 const collegeValidation = async function (req, res, next) {
     try {
         let data = req.body
+        // console.log(data)
 
         let collegename = req.body.name
 
-        if (!Object.keys(data).length > 0) return res.status(400).send({ status: false, msg: "data not found" })
+        if (data == null) return res.status(400).send({ status: false, msg: "data not found" })
 
         if (!data.name || typeof (data.name) != 'string' || !data.name.match(strregEx)) return res.status(400).send({ status: false, msg: "College name is not found in valid Format" })
         let repeatedName = await collegeModel.findOne({ name: collegename })
@@ -62,6 +64,8 @@ const internValidation = async function (req, res, next) {
 }
 
 module.exports.collegeValidation = collegeValidation
+
+module.exports.internValidation = internValidation
 
 
 

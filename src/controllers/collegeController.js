@@ -19,7 +19,7 @@ const createCollege = async function (req, res) {
 const collegeInterns = async function (req, res) {
     try {
         const collegeAbbreviation = req.query.collegeName;
-        if (!collegeAbbreviation) return res.status(400).send({ status: false, message: "enter the abbreviated name of a college" }); //validation1
+        if (!collegeAbbreviation) return res.status(400).send({ status: false, message: "enter the abbreviated collegeName in query params" }); //validation1
 
         let college = await collegeModel.findOne({ name: collegeAbbreviation }).select({ name: 1, fullName: 1, logoLink: 1 });
         if (!college) return res.status(404).send({ status: false, message: "no college found" });   //validation2
@@ -38,5 +38,4 @@ const collegeInterns = async function (req, res) {
     }
 }
 
-module.exports.collegeInterns = collegeInterns;
-module.exports.createCollege = createCollege;
+module.exports = { createCollege, collegeInterns }
