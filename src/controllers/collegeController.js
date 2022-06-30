@@ -5,15 +5,18 @@ const internModel = require('../models/internModel.js');
 // create College         
 const createCollege = async function (req, res) {
     try {
-        const details = req.body;
-        details.name;
+        const {name, fullName, logoLink } = req.body;
+        const details = {name:name, fullName:fullName, logoLink:logoLink};      //this will handle unnecessary keys coming from req.body
+
         const savedCollege = await collegeModel.create(details);
         return res.status(201).send({ status: true, data: savedCollege });
     } catch (error) {
         console.log(error)
         return res.status(500).send({ status: false, messsage: error.message })
     }
-}
+}//wroking fine
+
+
 
 
 //get college details

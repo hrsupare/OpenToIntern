@@ -6,10 +6,10 @@ const internModel = require('../models/internModel.js');
 //create intern
 const createIntern = async function(req, res){
     try {
-        const details = req.body;
+        const {name, email, mobile, collegeName } = req.body;
+        const details = {name:name, email:email, mobile:mobile, collegeName:collegeName};      //this will handle unnecessary keys coming from req.body
 
-        const clgName = req.body.collegeName.toLowerCase();     //here collegeName is abbreviation
-        const clg = await collegeModel.findOne({name:clgName});
+        const clg = await collegeModel.findOne({name:collegeName});
         if(!clg) return res.status(400).send({status:false, message: "sorry! this college has been not registered yet"})
 
         details.collegeId = clg._id;
