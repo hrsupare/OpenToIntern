@@ -54,6 +54,15 @@ const collegeValidation = async function (req, res, next) {
 
 const internValidation = async function (req, res, next) {
     try {
+        const fieldAllowed = ["name","email","mobile","collegeName"];
+        const data = req.body;
+        const keyOf = Object.keys(data);
+        const receivedKey = fieldAllowed.filter((x) => !keyOf.includes(x));
+        if (receivedKey.length) {
+          return res
+            .status(400)
+            .send({ status: "fail", msg: `${receivedKey} field is missing` });
+        }
         const { collegeName, name, email, mobile } = data
         if (!(/^[A-Za-z ]{1,29}$/.test(name))) {
             return res
