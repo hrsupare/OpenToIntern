@@ -4,7 +4,7 @@ const internModel = require('../models/internModel.js');
 
 function isCollegeFullName(x){
     // if(x && x.trim().length === 0)return false;
-    const strregEx = /^\s*(?=[A-Za-z])[a-zA-Z\s\.\,]{4,}\s*$/;     //it will handle undefined, null, strings of only spaces "   " 
+    const strregEx = /^\s*(?=[A-Za-z])[a-zA-Z\s\.\,]{4,}\s*$/;     //it will handle undefined, null, strings of only space  "   " 
     return strregEx.test(x);
 }
 // console.log(isCollegeFullName("123456"))
@@ -45,13 +45,14 @@ function isLinkValid(x) {
 //email validation
 function isEmail(x){
     if(!x) return false;
-    const arr = x.trim().split("@");
-    if(arr[0].length >64) return false;
-    if(arr[1].length >255) return false;
+    const arr = x.trim();
+    if(arr[0].length > 64) return false;
+    if(arr[1].length > 255) return false;
 
     const regEx = /^\s*[a-zA-Z0-9]+([\.\_\-][a-zA-Z0-9]+)*@[a-z]+([\.\_\-][a-zA-Z0-9]+)*\.[a-z]{2,3}\s*$/;
     return regEx.test(x);
 }
+
 
 //mobile validation
 // (/^(?=[6789])[0-9]{10}$/.test(mobile)
