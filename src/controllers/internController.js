@@ -8,7 +8,7 @@ const createIntern = async function(req, res){
     try {
         const details = req.body;
 
-        const clgName = req.body.collegeName;
+        const clgName = req.body.collegeName.toLowerCase();     //here collegeName is abbreviation
         const clg = await collegeModel.findOne({name:clgName});
         if(!clg) return res.status(400).send({status:false, message: "sorry! this college has been not registered yet"})
 
@@ -21,6 +21,6 @@ const createIntern = async function(req, res){
         console.log(error)
         return res.status(500).send({status:false, messsage: error.message})
     }
+    
 }
-
-module.exports.createIntern = createIntern;
+module.exports.createIntern = createIntern
