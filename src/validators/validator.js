@@ -41,10 +41,6 @@ function isMobile(x){
 }
 
 
-
-
-
-
 module.exports = {isCollegeFullName, isCollegeName, isLinkValid, isEmail, isMobile};
 
 

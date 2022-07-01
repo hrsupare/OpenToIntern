@@ -17,7 +17,7 @@ const collegeValidation = async function (req, res, next) {
         const college = await collegeModel.findOne({ name: data.name.trim() }); 
         if (college)return res.status(400).send({ status: false, message : `${data.name.trim()} is Already Registered ` })     //name exists? validation
        
-        next();
+        next(); 
     } catch (err) {
         return res.status(500).send({ status: false, message: err.message })
     }

@@ -1,4 +1,3 @@
-const { findOne } = require('../models/collegeModel.js');
 const collegeModel = require('../models/collegeModel.js');
 const internModel = require('../models/internModel.js');
 
@@ -6,9 +5,10 @@ const internModel = require('../models/internModel.js');
 const createCollege = async function (req, res) {
     try {
         const {name, fullName, logoLink } = req.body;
-        const details = {};                 //this will handle unnecessary keys coming from req.body
+        const details = {};           
         
-        details.name = name.trim();         //updating trimmed values of field in request body
+        //updating trimmed values of field in request body
+        details.name = name.trim();         
         details.fullName = fullName.trim().split(" ").map((x)=> x.charAt(0).toUpperCase() + x.slice(1)).join(" ");
         details.logoLink = logoLink.trim();
 
@@ -18,9 +18,6 @@ const createCollege = async function (req, res) {
         return res.status(500).send({ status: false, messsage: error.message })
     }
 }
-
-
-
 
 //get college details
 const collegeInterns = async function (req, res) {

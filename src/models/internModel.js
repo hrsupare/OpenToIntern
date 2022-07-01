@@ -4,14 +4,17 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const internSchema = new mongoose.Schema({
 
-    name: { type: String, required: true },
+    name: {
+        type: String,
+        required: true
+    },
     email: {
         type: mongoose.SchemaTypes.Email,
         required: true,
         unique: true
     },
     mobile: {
-        type: String,           
+        type: String,
         required: true,
         unique: true,
     },
