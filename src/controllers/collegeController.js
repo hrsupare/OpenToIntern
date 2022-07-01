@@ -6,15 +6,18 @@ const internModel = require('../models/internModel.js');
 const createCollege = async function (req, res) {
     try {
         const {name, fullName, logoLink } = req.body;
-        const details = {name:name, fullName:fullName, logoLink:logoLink};      //this will handle unnecessary keys coming from req.body
+        const details = {};                 //this will handle unnecessary keys coming from req.body
+        
+        details.name = name.trim();         //updating trimmed values of field in request body
+        details.fullName = fullName.trim().split(" ").map((x)=> x.charAt(0).toUpperCase() + x.slice(1)).join(" ");
+        details.logoLink = logoLink.trim();
 
         const savedCollege = await collegeModel.create(details);
         return res.status(201).send({ status: true, data: savedCollege });
     } catch (error) {
-        console.log(error)
         return res.status(500).send({ status: false, messsage: error.message })
     }
-}//wroking fine
+}
 
 
 
@@ -32,12 +35,11 @@ const collegeInterns = async function (req, res) {
         const internsList = await internModel.find({collegeId : clgId}).select({name:1, email:1, mobile:1});
         const result =  {...college.toJSON(), interns : internsList};
         delete result._id;
-        if(internsList.length === 0) result.interns = "currently, there a no any interns at this college"
+        if(internsList.length === 0) result.interns = "currently, there are no any interns at this college"
 
         return res.status(200).send({ status: true, data: result });
 
     } catch (error) {
-        console.log(error);
         return res.status(500).send({ status: false, message: error.message })
     }
 }
