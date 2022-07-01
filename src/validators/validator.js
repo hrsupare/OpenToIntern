@@ -32,6 +32,7 @@ function isEmail(x){
     return regEx.test(x);
 }
 
+
 //mobile validation
 function isMobile(x){
     if(!x) return false;
